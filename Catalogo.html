@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dramas Polly</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <style>
+        /* --- CONFIGURAÇÕES GERAIS --- */
+        :root {
+            --bg-color: #141414;
+            --text-primary: #ffffff;
+            --card-border-radius: 8px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            -webkit-user-select: none;
+            user-select: none;
+            padding-bottom: 40px; 
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            display: flex;
+            align-items: center; 
+            justify-content: flex-start;
+            padding: 15px 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 100%);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            gap: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .logo-img {
+            height: 50px; 
+            width: auto;
+            border-radius: 8px; 
+            box-shadow: 0 0 10px rgba(255, 0, 204, 0.3); 
+        }
+
+        .navbar-title {
+            font-size: 1.3rem;
+            font-weight: 900; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-style: italic;
+            background: linear-gradient(to right, #ff00cc, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- GRADE 3x3 --- */
+        .container {
+            padding: 0 10px;
+            margin-top: 20px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            padding-left: 10px;
+            border-left: 4px solid #ff00cc;
+        }
+
+        .grid-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; 
+            padding-bottom: 20px;
+        }
+
+        /* --- CARD DO PRODUTO --- */
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:active { transform: scale(0.96); transition: 0.1s; }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2 / 3; 
+            border-radius: var(--card-border-radius);
+            overflow: hidden;
+            margin-bottom: 5px;
+            border: 1px solid #333;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+
+        .product-image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(to top, rgba(0,0,0,1), transparent);
+        }
+
+        .product-info { 
+            text-align: left;
+            padding: 0 2px;
+        }
+
+        .product-title {
+            font-size: 0.70rem;
+            font-weight: 500;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 2px;
+            color: #e5e5e5;
+            line-height: 1.2;
+        }
+
+        .product-price {
+            font-size: 0.75rem;
+            color: #ff00cc; 
+            font-weight: bold;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <img src="https://res.cloudinary.com/dmntjsqzw/image/upload/v1764356891/Gemini_Generated_Image_v9f61jv9f61jv9f6_twjnu3.png" alt="Logo" class="logo-img">
+        <div class="navbar-title">Dramas Polly</div>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Catálogo Completo</h2>
+        
+        <div class="grid-gallery">
+            
+            <div class="product-card" onclick="comprar('1')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/db3p5qvio/image/upload/v1762538092/Gemini_Generated_Image_ni03uqni03uqni03_odxpwc.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Fortuna e Poder</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('2')">
+                <div class="product-image-container">
+                    <img src="https://l2playoficial.com.br/wfe/wp-content/uploads/2025/09/Design-sem-nome_20250921_144506_0000.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">O Poder do Conhecimento</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('3')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/db3p5qvio/image/upload/v1762794861/cover-4E3YlfuiHa_jl3kqo.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Rotas Paralelas</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('4')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dmntjsqzw/image/upload/v1763147738/85abdeb30989416c8acdacfa30c0dbbc_k6hoyc.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Fingindo Ser Pobre</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('5')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/db3p5qvio/image/upload/v1762186400/cover-XHidoaHNoJ_xioban.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">A Chefe Legista</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('6')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/db3p5qvio/image/upload/v1762186370/Gemini_Generated_Image_lsnwftlsnwftlsnw_dyedxl.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Uma Noite para Sempre</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('7')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dmntjsqzw/image/upload/v1763069038/Gemini_Generated_Image_e1mvcje1mvcje1mv_baxndk.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Renascido na Guerra</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('8')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dalkbxchq/image/upload/v1764272484/o_mestre_oculto_uvrktd.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">O Mestre Oculto</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('9')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dalkbxchq/image/upload/v1763662508/Gemini_Generated_Image_lzht46lzht46lzht_mszzix.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Uma Noite c/ Presidente</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('10')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dmntjsqzw/image/upload/v1763187958/maxresdefault_rfowvn.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Doçura Amarga</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('11')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dmntjsqzw/image/upload/v1763136381/Gemini_Generated_Image_1gu6om1gu6om1gu6_tjpzcd.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">A Primogênita</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+             <div class="product-card" onclick="comprar('12')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/db3p5qvio/image/upload/v1762538092/Gemini_Generated_Image_ni03uqni03uqni03_odxpwc.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Fortuna e Poder (Extra)</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+        </div> 
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); 
+        tg.setHeaderColor('#141414'); 
+        tg.setBackgroundColor('#141414');
+
+        function comprar(id) {
+            if (tg.HapticFeedback) { tg.HapticFeedback.impactOccurred('light'); }
+            tg.sendData(id); 
+        }
+    </script>
+</body>
+</html>
