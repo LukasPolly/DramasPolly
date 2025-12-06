@@ -74,17 +74,68 @@
     </div>
 
     <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.setHeaderColor('#141414'); tg.setBackgroundColor('#141414');
+        // Inicializa o WebApp
+        const tg = window.Telegram.WebApp;
+        
+        // Configurações visuais
+        tg.expand(); 
+        tg.setHeaderColor('#141414'); 
+        tg.setBackgroundColor('#141414');
 
-        window.onload = () => setTimeout(() => document.getElementById('modal').style.display = 'flex', 500);
-        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        // Modal/Pop-up
+        window.onload = function() {
+            setTimeout(function() {
+                const modal = document.getElementById('modal');
+                if(modal) modal.style.display = 'flex';
+                // Compatibilidade com seu código antigo que usava 'promoModal'
+                const oldModal = document.getElementById('promoModal');
+                if(oldModal) oldModal.style.display = 'flex';
+            }, 500);
+        };
 
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            if(modal) modal.style.display = 'none';
+            const oldModal = document.getElementById('promoModal');
+            if(oldModal) oldModal.style.display = 'none';
+        }
+
+        // Função de Compra Blindada
         function buy(id) {
+            // 1. Fecha o modal se for VIP
             if (id === 'vip') closeModal();
-            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-            tg.sendData(String(id));
+
+            try {
+                // 2. Converte ID para texto OBRIGATORIAMENTE (Isso corrige 90% dos erros)
+                const id_string = String(id);
+
+                // 3. Feedback Tátil (Vibração)
+                if (tg.HapticFeedback) { 
+                    tg.HapticFeedback.impactOccurred('medium'); 
+                }
+
+                // 4. ENVIA OS DADOS
+                tg.sendData(id_string);
+                
+                // 5. REDUNDÂNCIA: Se não fechar em 50ms, força o fechamento
+                setTimeout(function() {
+                    tg.close();
+                }, 50);
+
+            } catch (err) {
+                // Se der erro, avisa na tela para sabermos o que é
+                alert("Erro ao enviar: " + err);
+                tg.close(); // Tenta fechar mesmo com erro
+            }
+        }
+        
+        // Compatibilidade: Se seu HTML antigo chama 'comprar' em vez de 'buy', redireciona
+        function comprar(id) {
+            buy(id);
+        }
+        
+        function fecharModal() {
+            closeModal();
         }
     </script>
 </body>
