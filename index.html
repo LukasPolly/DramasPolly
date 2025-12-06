@@ -12,7 +12,7 @@
             --bg-color: #141414;
             --text-primary: #ffffff;
             --card-border-radius: 8px;
-            --vip-gold: #FFD700;
+            --vip-gold: #FFD700; /* Cor Dourada VIP */
         }
 
         body {
@@ -24,7 +24,7 @@
             -webkit-user-select: none;
             user-select: none;
             padding-bottom: 40px; 
-            overflow-x: hidden;
+            overflow-x: hidden; /* Evita rolagem lateral indesejada */
         }
 
         /* --- NAVBAR --- */
@@ -33,10 +33,11 @@
             align-items: center; 
             justify-content: space-between; 
             padding: 15px 20px;
-            background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 100%);
             position: sticky;
             top: 0;
-            z-index: 90;
+            z-index: 90; /* Z-index menor que o modal */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .nav-left { display: flex; align-items: center; gap: 15px; }
@@ -57,68 +58,290 @@
             display: flex; align-items: center; gap: 5px;
             background: rgba(255, 215, 0, 0.15); 
             border: 1px solid var(--vip-gold);
-            padding: 6px 12px; border-radius: 20px;
+            padding: 8px 12px; border-radius: 20px;
             cursor: pointer; transition: 0.2s;
         }
+        
         .vip-btn:active { transform: scale(0.95); background: rgba(255, 215, 0, 0.3); }
-        .vip-icon { font-size: 1.1rem; }
-        .vip-text { font-size: 0.7rem; color: var(--vip-gold); font-weight: bold; text-transform: uppercase; }
+        .vip-icon { font-size: 1.2rem; }
+        .vip-text {
+            font-size: 0.75rem; color: var(--vip-gold);
+            font-weight: bold; text-transform: uppercase;
+        }
 
         /* --- POP-UP (MODAL) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
-            z-index: 999; display: none; justify-content: center; align-items: center;
+            background: rgba(0, 0, 0, 0.85); /* Fundo escuro transparente */
+            backdrop-filter: blur(5px); /* Efeito de desfoque */
+            z-index: 999; /* Fica acima de tudo */
+            display: none; /* Começa oculto */
+            justify-content: center; align-items: center;
             animation: fadeIn 0.5s;
         }
+
         .modal-box {
             background: linear-gradient(145deg, #1f1f1f, #141414);
-            width: 85%; max-width: 350px; padding: 30px 20px; border-radius: 16px;
+            width: 85%; max-width: 350px;
+            padding: 30px 20px; border-radius: 16px;
             text-align: center; border: 1px solid #333;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
             position: relative; animation: slideUp 0.5s;
         }
+
         .modal-close {
-            position: absolute; top: 15px; right: 15px; font-size: 1.5rem; color: #888; cursor: pointer;
+            position: absolute; top: 15px; right: 15px;
+            font-size: 1.5rem; color: #888; cursor: pointer; line-height: 1;
         }
+
         .modal-title { font-size: 1.5rem; font-weight: bold; color: #fff; margin-bottom: 10px; }
         .modal-title span { color: var(--vip-gold); }
+
         .modal-desc { font-size: 0.95rem; color: #ccc; margin-bottom: 25px; line-height: 1.5; }
+
         .modal-cta {
             background: linear-gradient(to right, #FFD700, #FFA500);
             color: #000; font-weight: bold; font-size: 1rem;
-            padding: 15px; width: 100%; border: none; border-radius: 10px;
-            cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3); animation: pulse 2s infinite;
+            padding: 15px; width: 100%; border: none;
+            border-radius: 10px; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            animation: pulse 2s infinite;
         }
 
-        /* --- CARROSSEL (ESTILO NETFLIX) --- */
-        .section-container {
-            margin-bottom: 30px;
-            padding-left: 15px;
-        }
+        /* Animações */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+        /* --- GRADE 3x3 --- */
+        .container { padding: 0 10px; margin-top: 20px; }
         .section-title {
-            font-size: 1.1rem; font-weight: bold; margin-bottom: 10px;
-            color: var(--text-primary); padding-left: 5px;
+            font-size: 1.1rem; font-weight: bold; margin-bottom: 15px;
+            color: var(--text-primary); padding-left: 10px;
             border-left: 4px solid #ff00cc;
         }
-        .carousel {
-            display: flex;
-            overflow-x: auto;
-            gap: 12px;
-            padding-right: 20px;
-            padding-bottom: 10px;
-            scrollbar-width: none;
-        }
-        .carousel::-webkit-scrollbar { display: none; }
-
-        /* --- CARD DO PRODUTO --- */
-        .product-card {
-            flex: 0 0 auto; width: 110px; display: flex; flex-direction: column; cursor: pointer;
-        }
+        .grid-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-bottom: 20px; }
+        .product-card { display: flex; flex-direction: column; cursor: pointer; position: relative; }
         .product-card:active { transform: scale(0.96); transition: 0.1s; }
-        
         .product-image-container {
-            position: relative; width: 100%; height: 160px;
+            position: relative; width: 100%; aspect-ratio: 2 / 3; 
             border-radius: var(--card-border-radius); overflow: hidden;
             margin-bottom: 5px; border: 1px solid #333;
+        }
+        .product-image { width: 100%; height: 100%; object-fit: cover; }
+        .product-image-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 10%;
+            background: linear-gradient(to top, rgba(0,0,0,6), transparent);
+        }
+        .product-info { text-align: left; padding: 0 2px; }
+        .product-title {
+            font-size: 0.70rem; font-weight: 500; display: -webkit-box;
+            -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            margin-bottom: 2px; color: #e5e5e5; line-height: 1.2;
+        }
+        .product-price { font-size: 0.75rem; color: #ff00cc; font-weight: bold; margin-top: 2px; }
+    </style>
+</head>
+<body>
+
+    <div id="promoModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="modal-close" onclick="fecharModal()">&times;</span>
+            <div style="font-size: 3rem; margin-bottom: 10px;">👑</div>
+            <h2 class="modal-title">Seja <span>VIP</span></h2>
+            <p class="modal-desc">
+                Desbloqueie <strong>TODAS</strong> as séries e lançamentos agora mesmo.<br><br>
+                Acesso Ilimitado por apenas:
+            </p>
+            <button class="modal-cta" onclick="comprar('vip')">
+                Liberar Tudo - R$ 49,90
+            </button>
+        </div>
+    </div>
+
+    <div class="navbar">
+        <div class="nav-left">
+            <img src="https://res.cloudinary.com/dmntjsqzw/image/upload/v1764356891/Gemini_Generated_Image_v9f61jv9f61jv9f6_twjnu3.png" alt="Logo" class="logo-img">
+            <div class="navbar-title">Dramas Polly</div>
+        </div>
+        <div class="vip-btn" onclick="comprar('vip')">
+            <span class="vip-icon">👑</span>
+            <span class="vip-text">Seja VIP</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Catálogo</h2>
+        
+        <div class="grid-gallery">
+            
+            <div class="product-card" onclick="comprar('13')">
+                <div class="product-image-container">
+                    <img src="https://acf.goodshort.com/videobook/202511/cover-uVEzUb4aYV.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Reencarnação do Imortal</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('14')">
+                <div class="product-image-container">
+                    <img src="https://github.com/LukasPolly/DramasPolly/blob/main/capas/Marido%20em%20casa.jpg?raw=true" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Marido em Casa?</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('15')">
+                <div class="product-image-container">
+                    <img src="https://raw.githubusercontent.com/LukasPolly/DramasPolly/refs/heads/main/capas/Amor%20Nas%20Cinzas.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Amor nas Cinzas</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('16')">
+                <div class="product-image-container">
+                    <img src="https://raw.githubusercontent.com/LukasPolly/DramasPolly/refs/heads/main/capas/Filho%2C%20N%C3%A3o%20quero%20mais%20trabalhar.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Filho, não quero trabalhar</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('17')">
+                <div class="product-image-container">
+                    <img src="https://raw.githubusercontent.com/LukasPolly/DramasPolly/refs/heads/main/capas/Ceo%2C%20Aquele%20Estagi%C3%A1rio%20%C3%A9%20sua%20esposa.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">CEO, Aquela Estagiária...</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('1')">
+                <div class="product-image-container">
+                    <img src="https://github.com/LukasPolly/DramasPolly/blob/main/capas/Fortuna%20e%20Poder.jpg?raw=true" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Fortuna e Poder</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('2')">
+                <div class="product-image-container">
+                    <img src="https://l2playoficial.com.br/wfe/wp-content/uploads/2025/09/Design-sem-nome_20250921_144506_0000.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">O Poder do Conhecimento</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('3')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/db3p5qvio/image/upload/v1762794861/cover-4E3YlfuiHa_jl3kqo.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Rotas Paralelas</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('4')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dmntjsqzw/image/upload/v1763147738/85abdeb30989416c8acdacfa30c0dbbc_k6hoyc.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Fingindo Ser Pobre</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('5')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/db3p5qvio/image/upload/v1762186400/cover-XHidoaHNoJ_xioban.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">A Chefe Legista</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('6')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/db3p5qvio/image/upload/v1762186370/Gemini_Generated_Image_lsnwftlsnwftlsnw_dyedxl.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Uma Noite para Sempre</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('7')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dmntjsqzw/image/upload/v1763069038/Gemini_Generated_Image_e1mvcje1mvcje1mv_baxndk.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Renascido na Guerra</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('8')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dalkbxchq/image/upload/v1764272484/o_mestre_oculto_uvrktd.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">O Mestre Oculto</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('9')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dalkbxchq/image/upload/v1763662508/Gemini_Generated_Image_lzht46lzht46lzht_mszzix.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Uma Noite c/ Presidente</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('10')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dmntjsqzw/image/upload/v1763187958/maxresdefault_rfowvn.jpg" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Doçura Amarga</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+            <div class="product-card" onclick="comprar('11')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/dmntjsqzw/image/upload/v1763136381/Gemini_Generated_Image_1gu6om1gu6om1gu6_tjpzcd.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">A Primogênita</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+             <div class="product-card" onclick="comprar('12')">
+                <div class="product-image-container">
+                    <img src="https://res.cloudinary.com/db3p5qvio/image/upload/v1762538092/Gemini_Generated_Image_ni03uqni03uqni03_odxpwc.png" class="product-image">
+                    <div class="product-image-overlay"></div>
+                </div>
+                <div class="product-info"><div class="product-title">Fortuna e Poder (Extra)</div><div class="product-price">R$ 4,99</div></div>
+            </div>
+
+        </div> 
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); 
+        tg.setHeaderColor('#141414'); 
+        tg.setBackgroundColor('#141414');
+
+        // --- LÓGICA DO POP-UP ---
+        window.onload = function() {
+            // Mostra o modal 500ms depois de abrir o site (efeito suave)
+            setTimeout(function() {
+                document.getElementById('promoModal').style.display = 'flex';
+            }, 500);
+        };
+
+        function fecharModal() {
+            document.getElementById('promoModal').style.display = 'none';
+        }
+
+        function comprar(id) {
+            if (tg.HapticFeedback) { tg.HapticFeedback.impactOccurred('medium'); }
+            
+            // Se comprar pelo modal, fecha ele
+            if (id === 'vip') {
+                fecharModal();
+            }
+            
+            tg.sendData(id); 
+        }
+    </script>
+</body>
+</html>
