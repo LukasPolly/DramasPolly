@@ -7,12 +7,12 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <style>
-        /* --- CONFIGURAÇÕES GERAIS --- */
+        /* --- SEU DESIGN ORIGINAL --- */
         :root {
             --bg-color: #141414;
             --text-primary: #ffffff;
             --card-border-radius: 8px;
-            --vip-gold: #FFD700; /* Cor Dourada VIP */
+            --vip-gold: #FFD700;
         }
 
         body {
@@ -24,10 +24,9 @@
             -webkit-user-select: none;
             user-select: none;
             padding-bottom: 40px; 
-            overflow-x: hidden; /* Evita rolagem lateral indesejada */
+            overflow-x: hidden;
         }
 
-        /* --- NAVBAR --- */
         .navbar {
             display: flex;
             align-items: center; 
@@ -36,7 +35,7 @@
             background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 100%);
             position: sticky;
             top: 0;
-            z-index: 90; /* Z-index menor que o modal */
+            z-index: 90;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
@@ -72,10 +71,10 @@
         /* --- POP-UP (MODAL) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); /* Fundo escuro transparente */
-            backdrop-filter: blur(5px); /* Efeito de desfoque */
-            z-index: 999; /* Fica acima de tudo */
-            display: none; /* Começa oculto */
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            display: none;
             justify-content: center; align-items: center;
             animation: fadeIn 0.5s;
         }
@@ -90,13 +89,11 @@
         }
 
         .modal-close {
-            position: absolute; top: 15px; right: 15px;
-            font-size: 1.5rem; color: #888; cursor: pointer; line-height: 1;
+            position: absolute; top: 15px; right: 15px; font-size: 1.5rem; color: #888; cursor: pointer; line-height: 1;
         }
 
         .modal-title { font-size: 1.5rem; font-weight: bold; color: #fff; margin-bottom: 10px; }
         .modal-title span { color: var(--vip-gold); }
-
         .modal-desc { font-size: 0.95rem; color: #ccc; margin-bottom: 25px; line-height: 1.5; }
 
         .modal-cta {
@@ -108,12 +105,11 @@
             animation: pulse 2s infinite;
         }
 
-        /* Animações */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        /* --- GRADE 3x3 --- */
+        /* --- SUA GRADE 3x3 --- */
         .container { padding: 0 10px; margin-top: 20px; }
         .section-title {
             font-size: 1.1rem; font-weight: bold; margin-bottom: 15px;
@@ -129,10 +125,13 @@
             margin-bottom: 5px; border: 1px solid #333;
         }
         .product-image { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* SUA CONFIGURAÇÃO DE OVERLAY (10%) */
         .product-image-overlay {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 10%;
             background: linear-gradient(to top, rgba(0,0,0,6), transparent);
         }
+        
         .product-info { text-align: left; padding: 0 2px; }
         .product-title {
             font-size: 0.70rem; font-weight: 500; display: -webkit-box;
@@ -154,7 +153,7 @@
                 Acesso Ilimitado por apenas:
             </p>
             <button class="modal-cta" onclick="comprar('vip')">
-                Liberar Tudo - R$ 49,90
+                Liberar Tudo - R$ 29,90
             </button>
         </div>
     </div>
@@ -171,7 +170,7 @@
     </div>
 
     <div class="container">
-        <h2 class="section-title">Catálogo</h2>
+        <h2 class="section-title">Catálogo Completo</h2>
         
         <div class="grid-gallery">
             
@@ -314,29 +313,43 @@
         </div> 
     </div>
 
-<script>
+    <script>
         // Inicializa o WebApp
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Abre em tela cheia
+        tg.expand(); 
         tg.setHeaderColor('#141414'); 
         tg.setBackgroundColor('#141414');
 
+        // Lógica do Modal/Pop-up
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById('promoModal').style.display = 'flex';
+            }, 500);
+        };
+
+        function fecharModal() {
+            document.getElementById('promoModal').style.display = 'none';
+        }
+
         function comprar(id) {
-            // 1. Garante que o ID é texto (evita erro de tipo)
+            // Se clicar no botão VIP do modal, fecha o modal primeiro
+            if (id === 'vip') {
+                fecharModal();
+            }
+
+            // 1. Converte o ID para Texto (String) para evitar erros
             let id_produto = String(id);
 
-            // 2. Tenta fazer a vibração (se der erro no celular, ignora e continua)
+            // 2. Tenta vibrar (feedback tátil)
             try {
                 if (tg.HapticFeedback) { tg.HapticFeedback.impactOccurred('medium'); }
             } catch (e) {
                 console.log("Erro de vibração ignorado");
             }
 
-            // 3. ENVIA OS DADOS E FECHA
-            // O comando sendData envia o ID pro Python e fecha o Mini App automaticamente
+            // 3. ENVIA OS DADOS E FECHA O MINI APP
             tg.sendData(id_produto); 
         }
     </script>
 </body>
 </html>
-
