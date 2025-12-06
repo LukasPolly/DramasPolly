@@ -24,7 +24,7 @@
             -webkit-user-select: none;
             user-select: none;
             padding-bottom: 40px; 
-            overflow-x: hidden; /* Evita rolagem lateral indesejada */
+            overflow-x: hidden;
         }
 
         /* --- NAVBAR --- */
@@ -36,7 +36,7 @@
             background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 100%);
             position: sticky;
             top: 0;
-            z-index: 90; /* Z-index menor que o modal */
+            z-index: 90;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
@@ -72,10 +72,10 @@
         /* --- POP-UP (MODAL) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); /* Fundo escuro transparente */
-            backdrop-filter: blur(5px); /* Efeito de desfoque */
-            z-index: 999; /* Fica acima de tudo */
-            display: none; /* Começa oculto */
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            display: none; /* Começa oculto e o JS ativa depois */
             justify-content: center; align-items: center;
             animation: fadeIn 0.5s;
         }
@@ -97,11 +97,11 @@
         .modal-title { font-size: 1.5rem; font-weight: bold; color: #fff; margin-bottom: 10px; }
         .modal-title span { color: var(--vip-gold); }
 
-        .modal-desc { font-size: 0.95rem; color: #ccc; margin-bottom: 25px; line-height: 1.5; }
+        .modal-desc { font-size: 1.1rem; color: #ccc; margin-bottom: 25px; line-height: 1.5; }
 
         .modal-cta {
             background: linear-gradient(to right, #FFD700, #FFA500);
-            color: #000; font-weight: bold; font-size: 1rem;
+            color: #000; font-weight: bold; font-size: 1.2rem;
             padding: 15px; width: 100%; border: none;
             border-radius: 10px; cursor: pointer; text-transform: uppercase;
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
@@ -148,13 +148,12 @@
         <div class="modal-box">
             <span class="modal-close" onclick="fecharModal()">&times;</span>
             <div style="font-size: 3rem; margin-bottom: 10px;">👑</div>
-            <h2 class="modal-title">Seja <span>VIP</span></h2>
+            <h2 class="modal-title"><span>VIP</span></h2>
             <p class="modal-desc">
-                Desbloqueie <strong>TODAS</strong> as séries e lançamentos agora mesmo.<br><br>
-                Acesso Ilimitado por apenas:
+                Quer desbloquear <strong>ESTAS</strong> e diversas <strong>OUTRAS</strong> séries?
             </p>
             <button class="modal-cta" onclick="comprar('vip')">
-                Liberar Tudo - R$ 49,90
+                SEJA VIP
             </button>
         </div>
     </div>
@@ -317,23 +316,37 @@
 <script>
         // Inicializa o WebApp
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Abre em tela cheia
+        tg.expand(); 
         tg.setHeaderColor('#141414'); 
         tg.setBackgroundColor('#141414');
 
+        // --- LÓGICA DO POP-UP (ADICIONADO) ---
+        window.onload = function() {
+            // Espera 2 segundos e mostra o pop-up
+            setTimeout(function() {
+                document.getElementById('promoModal').style.display = 'flex';
+            }, 2000);
+        };
+
+        function fecharModal() {
+            document.getElementById('promoModal').style.display = 'none';
+        }
+
         function comprar(id) {
-            // 1. Garante que o ID é texto (evita erro de tipo)
+            // Se o cliente clicou em comprar no VIP, fecha o modal antes de enviar
+            if (id === 'vip') {
+                fecharModal();
+            }
+
             let id_produto = String(id);
 
-            // 2. Tenta fazer a vibração (se der erro no celular, ignora e continua)
             try {
                 if (tg.HapticFeedback) { tg.HapticFeedback.impactOccurred('medium'); }
             } catch (e) {
                 console.log("Erro de vibração ignorado");
             }
 
-            // 3. ENVIA OS DADOS E FECHA
-            // O comando sendData envia o ID pro Python e fecha o Mini App automaticamente
+            // Envia e fecha
             tg.sendData(id_produto); 
         }
     </script>
