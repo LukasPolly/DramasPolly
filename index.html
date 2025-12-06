@@ -314,34 +314,29 @@
         </div> 
     </div>
 
-    <script>
+<script>
+        // Inicializa o WebApp
         let tg = window.Telegram.WebApp;
-        tg.expand(); 
+        tg.expand(); // Abre em tela cheia
         tg.setHeaderColor('#141414'); 
         tg.setBackgroundColor('#141414');
 
-        // --- LÓGICA DO POP-UP ---
-        window.onload = function() {
-            // Mostra o modal 500ms depois de abrir o site (efeito suave)
-            setTimeout(function() {
-                document.getElementById('promoModal').style.display = 'flex';
-            }, 500);
-        };
-
-        function fecharModal() {
-            document.getElementById('promoModal').style.display = 'none';
-        }
-
         function comprar(id) {
-            if (tg.HapticFeedback) { tg.HapticFeedback.impactOccurred('medium'); }
-            
-            // Se comprar pelo modal, fecha ele
-            if (id === 'vip') {
-                fecharModal();
+            // 1. Garante que o ID é texto (evita erro de tipo)
+            let id_produto = String(id);
+
+            // 2. Tenta fazer a vibração (se der erro no celular, ignora e continua)
+            try {
+                if (tg.HapticFeedback) { tg.HapticFeedback.impactOccurred('medium'); }
+            } catch (e) {
+                console.log("Erro de vibração ignorado");
             }
-            
-            tg.sendData(id); 
+
+            // 3. ENVIA OS DADOS E FECHA
+            // O comando sendData envia o ID pro Python e fecha o Mini App automaticamente
+            tg.sendData(id_produto); 
         }
     </script>
 </body>
 </html>
+
